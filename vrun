@@ -4,6 +4,13 @@
 #cd `pwd`
 tport=4213
 
+if [ $1 = "-p" ] || [ $1 = "--port" ]
+then
+    tport=$2
+    shift 2
+fi
+
+
 run(){
 	/bin/sh -c "echo \"admin\n$*\"; sleep 0.1; echo \"logout\"" | nc 127.0.0.1 $tport | sed '/Password:/d' | 
 	sed '/VLC media player 2.0.3 Twoflower/d' |
