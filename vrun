@@ -47,6 +47,12 @@ fi;
 	done
 	exit 0
 fi;
+
+if [[ $1 = "goto" ]] || [[ $1 = "playlist" ]]; then
+  c=${2/ */} # supprime tout après un espace insécable
+  run $1 $c
+  exit 0
+fi
 	
 
 run $*;
