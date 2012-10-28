@@ -53,7 +53,7 @@ _vrun(){
     fi
   fi
   if contain $first "$files"; then
-    COMPREPLY=( $(compgen -f  -- $cur) )
+    _filedir &>/dev/null
     return 0
   fi
 
