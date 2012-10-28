@@ -4,7 +4,7 @@
 #cd `pwd`
 tport=4213
 
-if [ $1 = "-p" ] || [ $1 = "--port" ]
+if [[ $1 = "-p" ]] || [[ $1 = "--port" ]]
 then
     tport=$2
     shift 2
