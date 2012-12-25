@@ -13,7 +13,7 @@ fi
 
 run(){
 	/bin/sh -c "echo \"admin\n$*\"; sleep 0.1; echo \"logout\"" | nc 127.0.0.1 $tport | sed '/Password:/d' | 
-	sed '/VLC media player 2.0.3 Twoflower/d' |
+	sed '/VLC media player .* Twoflower/d' |
 	sed '/Welcome, Master/d' |
 	sed '/Bye-bye/d'
 }
