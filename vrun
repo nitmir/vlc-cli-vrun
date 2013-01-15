@@ -1,8 +1,21 @@
 #!/bin/bash
-#~ set -x
-#~ exec 2>>/home/samir/log_vlc.txt
-#cd `pwd`
-tport=4213
+##############################################################
+#              Configuration par defaut                      #
+#                                                            #
+# À surcharger possiblement dans ~/.config/vrun/configrc     #
+##############################################################
+
+
+# port telnet de vlc
+tport=4212
+# mot de passe telnet de vlc
+password="admin"
+
+#############################################################
+
+if [ -f ~/.config/vrun/configrc ]; then
+. ~/.config/vrun/configrc
+fi
 
 if [[ $1 = "-p" ]] || [[ $1 = "--port" ]]
 then
@@ -12,10 +25,8 @@ fi
 
 
 run(){
-	/bin/sh -c "echo \"admin\n$*\"; sleep 0.1; echo \"logout\"" | nc 127.0.0.1 $tport | sed '/Password:/d' | 
-	sed '/VLC media player 2.0.3 Twoflower/d' |
-	sed '/Welcome, Master/d' |
-	sed '/Bye-bye/d'
+	/bin/sh -c "echo \"$password\n$*\"; sleep 0.1; echo \"logout\"" | nc 127.0.0.1 $tport | 
+	sed '/Password:/d;/VLC media player 2.0.3 Twoflower/d;/Welcome, Master/d;/Bye-bye/d'
 }
 if [[ $1 = "pause" ]]; then
 	a=`run is_playing`;
