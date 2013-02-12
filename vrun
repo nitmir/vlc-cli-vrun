@@ -29,7 +29,38 @@ run(){
 	sed '/Password:/d;/VLC media player .* Twoflower/d;/Welcome, Master/d;/Bye-bye/d'
 }
 
+contain(){
+    local i
+    for i in $2; do
+        if [[ "$i" = "$1" ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+second_to_time(){
+    local min seconde
+    if [ $1 -ge 60 ]; then
+        min=$(( $1 / 60 ))
+        echo -n "${min}:"
+    else
+        min=0;
+    fi
+    seconde=$(( $1 - 60 * $min ))
+    printf "%02d\n" $seconde
+}
+
 echo -en '\033['m;
+
+if contain "$1" "get_time get_length"; then
+    a=`run $1`
+    a=${a:0:-1}
+    if [[ $a = [0-9]* ]]; then
+        second_to_time $a;
+        exit 0
+    fi;
+fi;
 
 if [[ $1 = "pause" ]]; then
 	a=`run is_playing`;
@@ -40,7 +71,7 @@ if [[ $1 = "pause" ]]; then
 	fi;
 fi;
 
- if [[ $1 = "add" ]] || [[ $1 = "enqueue" ]]; then
+ if contain "$1" "add enqueue"; then
 	if [ `pidof vlc | wc -l` -le 0 ]; then
 		vlc --extraintf telnet --telnet-port $tport &>/dev/null &
 		sleep 1
