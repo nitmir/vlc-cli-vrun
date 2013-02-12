@@ -28,6 +28,9 @@ run(){
 	/bin/sh -c "echo \"$password\n$*\"; sleep 0.1; echo \"logout\"" | nc 127.0.0.1 $tport | 
 	sed '/Password:/d;/VLC media player .* Twoflower/d;/Welcome, Master/d;/Bye-bye/d'
 }
+
+echo -en '\033['m;
+
 if [[ $1 = "pause" ]]; then
 	a=`run is_playing`;
 	a=${a:0:1}
@@ -64,7 +67,6 @@ if [[ $1 = "goto" ]] || [[ $1 = "playlist" ]]; then
   run $1 $c
   exit 0
 fi
-	
 
 run $*;
 
