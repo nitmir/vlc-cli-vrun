@@ -26,7 +26,7 @@ fi
 
 run(){
 	/bin/sh -c "echo \"$password\n$*\"; sleep 0.1; echo \"logout\"" | nc 127.0.0.1 $tport | 
-	sed '/Password:/d;/VLC media player .* Twoflower/d;/Welcome, Master/d;/Bye-bye/d'
+	sed '/Password:/d;/VLC media player .*/d;/Welcome, Master/d;/Bye-bye/d'
 }
 
 contain(){
@@ -51,53 +51,59 @@ second_to_time(){
     printf "%02d\n" $seconde
 }
 
-echo -en '\033['m;
-
-if contain "$1" "get_time get_length"; then
-    a=`run $1`
-    a=${a%?}
-    if [[ $a = [0-9]* ]]; then
-        second_to_time $a;
-        exit 0
-    fi;
-fi;
-
-if [[ $1 = "pause" ]]; then
-	a=`run is_playing`;
-	a=${a:0:1}
-	if [ $a -le 0 ]; then
-		run play
-		exit 0
-	fi;
-fi;
-
- if contain "$1" "add enqueue"; then
-	if [ `pidof vlc | wc -l` -le 0 ]; then
-		vlc --extraintf telnet --telnet-port $tport &>/dev/null &
-		sleep 1
-		if [ `pidof vlc | wc -l` -le 0 ]; then
-			cvlc --extraintf telnet --telnet-port $tport &>/dev/null &
-			sleep 1
+case $1 in
+	get_time|get_length)
+		a=`run $1`
+		a=${a%?}
+		if [[ $a = [0-9]* ]]; then
+			second_to_time $a;
+			exit 0
 		fi
-	fi
-	i=0
-	for path in "${@:2}"; do
-		c=${path:0:1}
-		d=${path:0:6}
-		if [[ "$c" != "/" ]] && [[ "$d" != "http:/" ]] && [[ "$d" != "ftp://" ]]; then
-			run $1 "`pwd`/$path"
-		else
-			run $1 $path
-		fi;
-	done
-	exit 0
-fi;
-
-if [[ $1 = "goto" ]] || [[ $1 = "playlist" ]]; then
-  c=${2/ */} # supprime tout après un espace insécable
-  run $1 $c
-  exit 0
-fi
-
-run $*;
-
+	;;
+	pause)
+		a=`run is_playing`;
+		a=${a:0:1}
+		if [ $a -le 0 ]; then
+			run play
+			exit 0
+		fi
+	;;
+	add|enqueue)
+		i=0
+		for path in "${@:2}"; do
+			c=${path:0:1}
+			d=${path:0:6}
+			if [[ "$c" != "/" ]] && [[ "$d" != "http:/" ]] && [[ "$d" != "ftp://" ]]; then
+				run $1 "`pwd`/$path"
+			else
+				run $1 $path
+			fi;
+		done
+		exit 0
+	;;
+	goto|playlist|delete|atrack|vtrack|vratio|vcrop|crop|vzoom|zoom|vdeinterlace|vdeinterlace_mode|vdeinterlace_mode)
+		c=${2/ */} # supprime tout après un espace insécable
+		run $1 $c
+		exit 0
+	;;
+	move)
+		c=${2/ */}
+		d=${3/ */}
+		run $1 $c $d
+		exit 0
+	;;
+	start)
+		if [ `pidof vlc | wc -l` -le 0 ]; then
+			shift
+			vlc --extraintf telnet --telnet-port $tport $@ &>/dev/null &
+			sleep 2
+			if [ `pidof vlc | wc -l` -le 0 ]; then
+				cvlc --extraintf telnet --telnet-port $tport $@ &>/dev/null &
+				sleep 2
+			fi
+		fi
+	;;
+	*)
+		run $*;
+	;;
+esac
