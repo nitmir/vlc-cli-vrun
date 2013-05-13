@@ -81,7 +81,7 @@ case $1 in
 		done
 		exit 0
 	;;
-	goto|playlist|delete|atrack|vtrack|vratio|vcrop|crop|vzoom|zoom|vdeinterlace|vdeinterlace_mode|vdeinterlace_mode)
+	goto|playlist|atrack|vtrack|vratio|vcrop|crop|vzoom|zoom|vdeinterlace|vdeinterlace_mode|vdeinterlace_mode)
 		c=${2/ */} # supprime tout après un espace insécable
 		run $1 $c
 		exit 0
@@ -90,6 +90,13 @@ case $1 in
 		c=${2/ */}
 		d=${3/ */}
 		run $1 $c $d
+		exit 0
+	;;
+	delete)
+		for file in "${@:2}"; do
+			c=${file/ */} # supprime tout après un espace insécable
+			run $1 $c
+		done
 		exit 0
 	;;
 	start)

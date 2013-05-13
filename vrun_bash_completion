@@ -60,8 +60,7 @@ _vrun(){
 	\"`" -- $cur ) )
     fi;
   fi
-  if [ $argc -le 3 ]; then
-    if [[ $first = "move" ]] || ([ $argc -eq 2 ] && contain $first "$playlist_opts"); then
+  if [[ $first = "delete" ]] || ([ $argc -le 3 ] && [[ $first = "move" ]]) || ([ $argc -eq 2 ] && contain $first "$playlist_opts"); then
       COMPREPLY=( $(compgen -W "`vrun playlist 2 |
         sed \"s/^\+.*//;
         s/| *//;
@@ -71,9 +70,8 @@ _vrun(){
         s/ / /g; #on remplace les espace par un espace insécable dans le sed
         s/\r//g;
 	s/'/\\\\\\\\'/;
-	\"`" -- $cur ) )
+	\"` 2 - Liste de lecture" -- $cur ) )
       return 0
-    fi
   fi
   if contain $first "$files"; then
     _filedir &>/dev/null
