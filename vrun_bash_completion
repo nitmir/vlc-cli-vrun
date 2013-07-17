@@ -1,15 +1,3 @@
-# Fonction de notre auto completion
-
-contain(){
-  local i
-  for i in $2; do
-      if [[ "$i" = "$1" ]]; then
-        return 0
-      fi
-  done
-  return 1
-}
-
 
 _vrun(){
   # declaration des variables locales
@@ -39,15 +27,15 @@ _vrun(){
     return 0
   fi
   if [ $argc -eq 2 ]; then
-    if contain $first  "$onoff"; then
+    if [[ "$onoff" == *"$first"* ]]; then
       COMPREPLY=( $(compgen -W "on off" -- $cur) )
       return 0
     fi
-    if contain $first "$help" ]]; then
+    if [[ "$help" == *"$first"* ]]; then
 	COMPREPLY=( $(compgen -W "$opts" -- $cur ) )
 	return 0
     fi
-    if contain $first "$track"; then
+    if [[ "$track" == *"$first"* ]]; then
       COMPREPLY=( $(compgen -W "`vrun $first |
         sed \"s/^\+.*//;
         s/| *//;
@@ -60,7 +48,7 @@ _vrun(){
 	\"`" -- $cur ) )
     fi;
   fi
-  if [[ $first = "delete" ]] || ([ $argc -le 3 ] && [[ $first = "move" ]]) || ([ $argc -eq 2 ] && contain $first "$playlist_opts"); then
+  if [[ "$first" = "delete" ]] || ([ $argc -le 3 ] && [[ "$first" = "move" ]]) || ([ $argc -eq 2 ] && [[ "$playlist_opts" == *"$first"* ]]); then
       COMPREPLY=( $(compgen -W "`vrun playlist 2 |
         sed \"s/^\+.*//;
         s/| *//;
@@ -73,7 +61,7 @@ _vrun(){
 	\"` 2 - Liste de lecture" -- $cur ) )
       return 0
   fi
-  if contain $first "$files"; then
+  if [[ "$files" == *"$first"* ]]; then
     _filedir &>/dev/null
     return 0
   fi
