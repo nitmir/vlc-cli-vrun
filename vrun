@@ -1,14 +1,23 @@
 #!/bin/bash
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE.  See the GNU General Public License version 2 for
+# more details.
+#
+# You should have received a copy of the GNU General Public License version 2
+# along with this program; if not, write to the Free Software Foundation, Inc., 51
+# Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
 ##############################################################
-#              Configuration par defaut                      #
+#                 Default configuration                      #
 #                                                            #
-# À surcharger possiblement dans ~/.config/vrun/configrc     #
+# To be overload in ~/.config/vrun/configrc                  #
 ##############################################################
 
 
-# port telnet de vlc
+# vlc telnet port
 tport=4212
-# mot de passe telnet de vlc
+# vlc telnet password
 password="admin"
 
 #############################################################
@@ -25,7 +34,7 @@ fi
 
 
 run(){
-	/bin/sh -c "echo \"$password\n$*\"; sleep 0.1; echo \"logout\"" | nc 127.0.0.1 $tport | 
+	/bin/sh -c "echo \"$password\n$*\"; sleep 0.1; echo \"logout\"" | nc 127.0.0.1 $tport |
 	sed '/Password:/d;/VLC media player .*/d;/Welcome, Master/d;/Bye-bye/d'
 }
 
