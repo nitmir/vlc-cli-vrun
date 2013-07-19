@@ -17,6 +17,8 @@ You can overload vlc telnet port or password by creating a file :
 $ cat ~/.config/vrun/configrc
 # vlc telnet port
 tport=4212
+#vlc telnet address
+taddress="127.0.0.1"
 # vlc telnet password
 password="admin"
 </pre>

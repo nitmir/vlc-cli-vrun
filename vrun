@@ -17,9 +17,10 @@
 
 # vlc telnet port
 tport=4212
+#vlc telnet address
+taddress="127.0.0.1"
 # vlc telnet password
 password="admin"
-
 #############################################################
 
 if [ -f ~/.config/vrun/configrc ]; then
@@ -34,7 +35,7 @@ fi
 
 
 run(){
-	/bin/sh -c "echo \"$password\n$*\"; sleep 0.1; echo \"logout\"" | nc 127.0.0.1 $tport |
+	/bin/sh -c "echo \"$password\n$*\"; sleep 0.1; echo \"logout\"" | nc $taddress $tport |
 	sed '/Password:/d;/VLC media player .*/d;/Welcome, Master/d;/Bye-bye/d'
 }
 
