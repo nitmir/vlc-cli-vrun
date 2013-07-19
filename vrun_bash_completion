@@ -21,11 +21,15 @@ _vrun(){
   # cur  : désigne la chaine de caractère actuelle pour le dernier mot de la ligne de commande
   first="${COMP_WORDS[1]}"
   cur="${COMP_WORDS[argc]}"
-  opts="`vrun help \"\\*\" 2>/dev/null | sed 's/\. \. .*//;s/, /\n/g;/^+/d;s/| *//g;s/ .*//;s/\r//g'` start"
+  if [ -f ~/.config/vrun/commandrc ]; then
+    opts="`cat ~/.config/vrun/commandrc`"
+  else
+    opts="`vrun help \"\\*\" 2>/dev/null | sed 's/\. \. .*//;s/, /\n/g;/^+/d;s/| *//g;s/ .*//;s/\r//g'` start"
+  fi
   files="add enqueue start"
   onoff="repeat loop random fullscreen f"
   playlist_opts="playlist goto delete"
-  help="help ?"
+  help="help longhelp ?"
   track="atrack vtrack vratio vcrop crop vzoom zoom vdeinterlace vdeinterlace_mode vdeinterlace_mode"
 
   # les options possibles pour notre auto-complétion

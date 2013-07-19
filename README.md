@@ -28,10 +28,16 @@ password="admin"
 
 ### Usage
 
-For the bash completion to fully work, a vlc instance with the telnet interface activated need to be up.
+For the bash completion to fully work, a vlc instance with the telnet interface activated need to be up
+or the ```~/.config/vrun/commandrc``` with a list of command need to be fill up.
 Otherwise, you can only complete ```vrun start``` that will lauch an instance of vlc.
 
-For feature list, just use tab completion, and ```vrun help command``` for description.
+If you really want to feel up the ```~/.config/vrun/commandrc``` file (personnaly, I don't),
+launch a vlc instance and run : 
+```echo "`vrun help \"\\*\" 2>/dev/null | sed 's/\. \. .*//;s/, /\n/g;/^+/d;s/| *//g;s/ .*//;s/\r//g'` start" > ~/.config/vrun/commandrc```
+it should do the tricks.
+
+For feature list, just use tab completion or ```vrun help```, and ```vrun help command``` for description.
 
 #### Command list
 <pre>
