@@ -19,6 +19,8 @@
 tport=4212
 #vlc telnet address
 taddress="127.0.0.1"
+# local vlc binding address
+tbind="127.0.0.1"
 # vlc telnet password
 password="admin"
 #############################################################
@@ -108,10 +110,10 @@ case $1 in
 	start)
 		if [ `pidof vlc | wc -l` -le 0 ]; then
 			shift
-			vlc --extraintf telnet --telnet-port $tport $@ &>/dev/null &
+			vlc --extraintf telnet --telnet-port $tport --telnet-host $tbind $@ &>/dev/null &
 			sleep 2
 			if [ `pidof vlc | wc -l` -le 0 ]; then
-				cvlc --extraintf telnet --telnet-port $tport $@ &>/dev/null &
+				cvlc --extraintf telnet --telnet-port $tport --telnet-host $tbind $@ &>/dev/null &
 				sleep 2
 			fi
 		fi

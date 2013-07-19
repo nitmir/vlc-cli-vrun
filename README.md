@@ -19,6 +19,8 @@ $ cat ~/.config/vrun/configrc
 tport=4212
 #vlc telnet address
 taddress="127.0.0.1"
+# local vlc binding address
+tbind="127.0.0.1"
 # vlc telnet password
 password="admin"
 </pre>
