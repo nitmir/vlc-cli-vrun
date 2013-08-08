@@ -110,10 +110,10 @@ case $1 in
 	start)
 		if [ `pidof vlc | wc -l` -le 0 ]; then
 			shift
-			vlc --extraintf telnet --telnet-port $tport --telnet-host $tbind $@ &>/dev/null &
+			vlc --extraintf telnet --telnet-port $tport --telnet-host $tbind --telnet-password $password $@ &>/dev/null &
 			sleep 2
 			if [ `pidof vlc | wc -l` -le 0 ]; then
-				cvlc --extraintf telnet --telnet-port $tport --telnet-host $tbind $@ &>/dev/null &
+				cvlc --extraintf telnet --telnet-port $tport --telnet-host $tbind --telnet-password $password $@ &>/dev/null &
 				sleep 2
 			fi
 		fi
