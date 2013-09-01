@@ -85,7 +85,7 @@ case $1 in
 		for path in "${@:2}"; do
 			c=${path:0:1}
 			d=${path:0:6}
-			if [[ "$c" != "/" ]] && [[ "$d" != "http:/" ]] && [[ "$d" != "ftp://" ]]; then
+			if [[ "$c" != "/" ]] && [[ "$d" != "http://" ]] && [[ "$d" != "ftp://" ]] && [[ "$d" != "udp://" ]]; then
 				run $1 "`pwd`/$path"
 			else
 				run $1 $path
