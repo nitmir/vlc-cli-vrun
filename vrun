@@ -41,6 +41,14 @@ run(){
 	sed '/Password:/d;/VLC media player .*/d;/Welcome, Master/d;/Bye-bye/d'
 }
 
+formattime(){
+	a="$1"
+	a=${a%?}
+	if [[ $a = [0-9]* ]]; then
+		second_to_time $a;
+	fi
+}
+
 contain(){
     local i
     for i in $2; do
@@ -65,11 +73,7 @@ second_to_time(){
 
 case $1 in
 	get_time|get_length)
-		a=`run $1`
-		a=${a%?}
-		if [[ $a = [0-9]* ]]; then
-			second_to_time $a;
-		fi
+		formattime $(run $1)
 	;;
 	pause)
 		a=`run is_playing`;
@@ -105,6 +109,19 @@ case $1 in
 		for file in "${@:2}"; do
 			c=${file/ */} # supprime tout après un espace insécable
 			run $1 $c
+		done
+	;;
+	status)
+		i=0
+		run "get_time\nget_length\nstatus" | while read line; do
+			i=$(($i + 1))
+			if [[ $i -eq 1 ]]; then
+				echo -n "$(formattime $line) / ";
+			elif [[ $i -eq 2 ]]; then
+				formattime $line
+			elif [[ $i -ge 3 ]]; then
+				echo $line;
+			fi
 		done
 	;;
 	start)
