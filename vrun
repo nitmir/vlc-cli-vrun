@@ -116,9 +116,15 @@ case $1 in
 		run "get_time\nget_length\nstatus" | while read line; do
 			i=$(($i + 1))
 			if [[ $i -eq 1 ]]; then
-				echo -n "$(formattime $line) / ";
+				tmp=$(formattime $line)
+				if [[ "$tmp" != "" ]]; then
+					echo -n "$(formattime $line) / ";
+				fi
 			elif [[ $i -eq 2 ]]; then
-				formattime $line
+				tmp=$(formattime $line)
+				if [[ "$tmp" != "" ]]; then
+					echo $tmp
+				fi
 			elif [[ $i -ge 3 ]]; then
 				echo $line;
 			fi
